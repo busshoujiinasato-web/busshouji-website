@@ -1,0 +1,60 @@
+<header class="site-header">
+	<div class="header-inner">
+		<a class="logo" href="/">
+			<!-- Busshouji -->
+			 BBBBBBBBBB
+		</a>
+		<nav aria-label="グローバルナビゲーション">
+			<ul class="nav-list">
+				<li><a href="#overview">概要</a></li>
+				<li><a href="#news">お知らせ</a></li>
+				<li><a href="#footer-contact">お問い合わせ</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 50;
+		width: 100%;
+		background: rgba(248, 244, 237, 0.6);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border-bottom: 1px solid rgba(84, 70, 50, 0.15);
+	}
+
+	.header-inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+		height: 80px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.logo {
+		font-size: 1.55rem;
+		letter-spacing: 0.08em;
+		color: #2b2419;
+		text-decoration: none;
+	}
+
+	.nav-list {
+		display: flex;
+		gap: 2rem;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.nav-list a {
+		color: #2f2c28;
+		text-decoration: none;
+		font-size: 0.95rem;
+		letter-spacing: 0.06em;
+	}
+</style>
