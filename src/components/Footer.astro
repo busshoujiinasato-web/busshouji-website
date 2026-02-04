@@ -1,0 +1,102 @@
+<footer id="footer-contact" class="site-footer">
+	<img src="/images/footer/footer.webp" alt="フッター背景画像" loading="lazy" />
+	<div class="footer-overlay">
+		<p class="footer-title">〇〇寺</p>
+		<p class="footer-info">〒000-0000</p>
+		<p class="footer-info">大阪府大阪市西成区汐路0丁目0-0</p>
+		<p class="footer-info">TEL：00-0000-0000</p>
+		<p class="footer-info">FAX：00-0000-0000</p>
+		<div class="footer-social">
+			<a href="#" aria-label="Instagram">
+				<span class="social-icon">Instagram</span>
+			</a>
+			<a href="#" aria-label="YouTube">
+				<span class="social-icon">YouTube</span>
+			</a>
+			<a href="#" aria-label="X">
+				<span class="social-icon">X</span>
+			</a>
+		</div>
+		<a class="footer-policy" href="/privacy-policy">プライバシーポリシー</a>
+		<p class="footer-copy">©2026 〇〇寺　All rights reserved</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		position: relative;
+		width: 100%;
+		height: 400px;
+		overflow: hidden;
+	}
+
+	.site-footer img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center center;
+		display: block;
+	}
+
+	.footer-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		color: #D9D9D9;
+		background: rgba(0, 0, 0, 0.5);
+		text-align: center;
+		padding: 24px;
+	}
+
+	.footer-title {
+		font-size: 2rem;
+		margin: 0 0 0.6rem;
+		letter-spacing: 0.22em;
+	}
+
+	.footer-info {
+		margin: 0;
+		letter-spacing: 0.2em;
+		font-size: 0.9rem;
+	}
+
+	.footer-social {
+		display: flex;
+		gap: 18px;
+		margin: 22px 0 14px;
+	}
+
+	.footer-social a {
+		display: inline-flex;
+		width: 44px;
+		height: 44px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 12px;
+		background: rgba(255, 255, 255, 0.9);
+		color: #1a1a1a;
+		text-decoration: none;
+		font-size: 0.7rem;
+		font-weight: 700;
+	}
+
+	.social-icon {
+		display: inline-block;
+	}
+
+	.footer-policy {
+		color: #D9D9D9;
+		text-decoration: underline;
+		font-size: 0.8rem;
+		letter-spacing: 0.2em;
+	}
+
+	.footer-copy {
+		margin-top: 14px;
+		font-size: 0.7rem;
+		letter-spacing: 0.18em;
+	}
+</style>
