@@ -1,0 +1,181 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>プライバシーポリシー | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">Privacy Policy</p>
+					<h1>プライバシーポリシー</h1>
+					<p>
+						当サイトにおける個人情報の取り扱いについて、以下のとおり定めます。
+					</p>
+				</div>
+			</section>
+
+			<section class="policy">
+				<div class="policy-body">
+					<p>
+						当サイト（以下、「当サイト」といいます）では、個人情報の保護を重要な責務と考え、
+						以下の方針に基づいて個人情報を取り扱います。
+					</p>
+
+					<h2>個人情報の取得について</h2>
+					<p>
+						当サイトでは、お問い合わせフォームの送信時に、氏名、メールアドレス、
+						お問い合わせ内容などの個人情報を取得する場合があります。
+					</p>
+
+					<h2>個人情報の利用目的</h2>
+					<p>取得した個人情報は、以下の目的のために利用いたします。</p>
+					<ul>
+						<li>お問い合わせへの回答および必要なご連絡のため</li>
+					</ul>
+
+					<h2>個人情報の第三者提供について</h2>
+					<p>
+						取得した個人情報は、法令に基づく場合を除き、第三者に提供することはありません。
+					</p>
+
+					<h2>外部サービスの利用について</h2>
+					<p>
+						当サイトでは、アクセス案内のために Google マップを利用しています。
+						Google マップの利用により、Google 社に対して利用者の情報が送信される場合があります。
+						これらの情報の取り扱いについては、Google 社のプライバシーポリシーをご確認ください。
+					</p>
+
+					<h2>個人情報の管理について</h2>
+					<p>
+						当サイトは、個人情報の漏洩、改ざん、不正アクセス等を防止するため、
+						適切な管理に努めます。
+					</p>
+
+					<h2>外部リンクについて</h2>
+					<p>
+						当サイトには外部サイトへのリンクが含まれる場合があります。
+						リンク先サイトにおける個人情報の取り扱いについては、
+						当サイトでは責任を負いかねます。
+					</p>
+
+					<h2>プライバシーポリシーの変更について</h2>
+					<p>本ポリシーの内容は、必要に応じて予告なく変更することがあります。</p>
+
+					<h2>お問い合わせ窓口</h2>
+					<p>本ポリシーに関するお問い合わせは、以下までご連絡ください。</p>
+					<p>（寺院名）</p>
+					<p>（連絡先メールアドレス等）</p>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 72px 0 40px;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.policy {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.policy-body {
+		background: rgba(255, 255, 255, 0.72);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 22px;
+		padding: 40px;
+		color: #3d3225;
+	}
+
+	.policy-body h2 {
+		margin: 2rem 0 0.9rem;
+		font-size: 1.5rem;
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.policy-body p {
+		margin: 0 0 1rem;
+		line-height: 1.9;
+	}
+
+	.policy-body ul {
+		margin: 0 0 1rem 1.2rem;
+		padding: 0;
+		line-height: 1.9;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.policy {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.policy-body {
+			padding: 24px;
+		}
+	}
+</style>

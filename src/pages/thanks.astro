@@ -1,0 +1,127 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>送信完了 | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">Thank You</p>
+					<h1>送信完了</h1>
+					<p>お問い合わせを受け付けました。折り返しご連絡いたします。</p>
+				</div>
+			</section>
+
+			<section class="thanks">
+				<div class="thanks-card">
+					<p>
+						内容を確認のうえ、担当者よりご連絡いたします。
+						今しばらくお待ちください。
+					</p>
+					<a class="back-link" href="/">トップへ戻る</a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 40px 0 40px;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.thanks {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.thanks-card {
+		background: rgba(255, 255, 255, 0.72);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 22px;
+		padding: 40px;
+		color: #3d3225;
+		line-height: 1.9;
+		display: grid;
+		gap: 16px;
+	}
+
+	.back-link {
+		color: var(--color-text);
+		text-decoration: none;
+		letter-spacing: 0.12em;
+		margin: 0 auto;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.thanks {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.thanks-card {
+			padding: 24px;
+		}
+	}
+</style>
