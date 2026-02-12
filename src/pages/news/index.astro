@@ -1,0 +1,153 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import "../../styles/global.css";
+import { getCollection } from "astro:content";
+
+const news = await getCollection("news");
+const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>お知らせ一覧 | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">News</p>
+					<h1>お知らせ一覧</h1>
+					<p>仏生寺からのお知らせを一覧でご覧いただけます。</p>
+				</div>
+			</section>
+
+			<section class="news">
+				<ul class="news-list">
+					{sortedNews.map((item) => (
+						<li>
+							<time datetime={item.data.date.toISOString().slice(0, 10)}>
+								{item.data.date.toISOString().slice(0, 10).replaceAll("-", "/")}
+							</time>
+							<a href={`/news/${item.slug}`}>{item.data.title}</a>
+							<p>{item.data.summary}</p>
+						</li>
+					))}
+				</ul>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 40px 0 40px;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.news {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.news-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.news-list li {
+		padding: 24px 0;
+		border-bottom: 1px solid rgba(84, 70, 50, 0.3);
+		display: grid;
+		gap: 8px;
+	}
+
+	.news-list time {
+		font-size: 15px;
+		letter-spacing: 0.08em;
+		color: #112e1e;
+	}
+
+	.news-list a {
+		text-decoration: none;
+		color: var(--color-text);
+		font-size: 1.2rem;
+		letter-spacing: 0.04em;
+		transition: color 0.2s ease, transform 0.2s ease;
+	}
+
+	.news-list p {
+		margin: 0;
+		color: #3d3225;
+		line-height: 1.8;
+	}
+
+	.news-link:hover, .news-link:focus-visible, .news-list a:hover, .news-list a:focus-visible {
+		/* text-decoration: underline; */
+		transform: scale(1.01);
+		color: #28678f;
+	}
+
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.news {
+			width: min(1120px, calc(100% - 32px));
+		}
+	}
+</style>

@@ -1,0 +1,204 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>アクセス | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">Access</p>
+					<h1>アクセス</h1>
+					<p>所在地とアクセスマップをご案内します。</p>
+				</div>
+			</section>
+
+			<section class="access">
+				<div class="access-card">
+					<div class="access-map">
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3269.708702316398!2d135.76387381088188!3d34.9639090689322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60010f6a49ca9f47%3A0xd550f6978f82ccac!2z6b6N6LC35aSn5a2mIOa3seiNieOCreODo-ODs-ODkeOCuQ!5e0!3m2!1sja!2sjp!4v1770351415306!5m2!1sja!2sjp"
+							width="600"
+							height="450"
+							style="border:0;"
+							allowfullscreen=""
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							title="アクセスマップ"
+						></iframe>
+					</div>
+
+					<div class="access-info">
+						<p class="access-value">〒000-0000</p>
+						<p class="access-value">大阪府大阪市西成区汐路0丁目0-0</p>
+						<p class="access-value">TEL：00-0000-0000 / FAX：00-0000-0000</p>
+					</div>
+
+					<div class="access-notes">
+						<div class="access-note">
+							<p class="access-note__title">- 車でお越しの場合 -</p>
+							<p>
+								最寄り〇〇ICから約10分。境内の駐車場をご利用ください。<br>
+								満車の場合は近隣のコインパーキングをご案内します。
+							</p>
+						</div>
+						<div class="access-note">
+							<p class="access-note__title">- 電車でお越しの場合 -</p>
+							<p>
+								最寄り〇〇駅から徒歩約8分。駅前の案内板に沿ってお越しください。<br>
+								バスをご利用の方は「〇〇前」で下車してください。
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 40px 0 40px;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.access {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.access-card {
+		background: rgba(255, 255, 255, 0.72);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 22px;
+		padding: 40px;
+		display: grid;
+		gap: 32px;
+	}
+
+	.access-info {
+		display: grid;
+		/* gap: 12px; */
+	}
+
+	.access-label {
+		margin: 0;
+		font-size: 0.85rem;
+		letter-spacing: 0.18em;
+		color: #7e6d52;
+	}
+
+	.access-value {
+		margin: 0 0 6px;
+		font-size: 1rem;
+		letter-spacing: 0.06em;
+		color: var(--color-text);
+	}
+
+	.access-map iframe {
+		width: 100%;
+		height: 420px;
+		border-radius: 16px;
+	}
+
+	.access-notes {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+
+	.access-note {
+		background: rgba(255, 255, 255, 0.5);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 16px;
+		padding: 16px 18px;
+		color: #3d3225;
+		line-height: 1.8;
+	}
+
+	.access-note__title {
+		font-weight: bold;
+		margin: 0 0 8px;
+		font-size: 0.95rem;
+		letter-spacing: 0.08em;
+		color: var(--color-text);
+	}
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.access {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.access-card {
+			padding: 24px;
+		}
+
+		.access-map iframe {
+			height: 320px;
+		}
+
+		.access-notes {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,288 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>お問い合わせ | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">Contact</p>
+					<h1>お問い合わせ</h1>
+					<p>ご質問やご相談はこちらのフォームからお送りください。</p>
+				</div>
+			</section>
+
+			<section class="contact">
+				<form id="contact-form" class="contact-form" action="https://formspree.io/f/xreazjpj" method="post">
+					<input type="hidden" name="_subject" value="【Busshouji】お問い合わせ" />
+					<input type="hidden" name="_redirect" value="http://localhost:4321/thanks" />
+					<div class="form-row">
+						<label for="name">
+							名前 <span class="required">必須</span>
+						</label>
+						<input id="name" name="name" type="text" required />
+					</div>
+
+					<div class="form-row">
+						<label for="phone">
+							電話番号 <span class="optional">任意</span>
+						</label>
+						<input id="phone" name="phone" type="tel" />
+					</div>
+
+					<div class="form-row">
+						<label for="email">
+							メールアドレス <span class="required">必須</span>
+						</label>
+						<input id="email" name="email" type="email" required />
+					</div>
+
+					<div class="form-row">
+						<label for="message">
+							お問い合わせ内容 <span class="required">必須</span>
+						</label>
+						<textarea id="message" name="message" rows="6" required></textarea>
+					</div>
+
+					<div class="form-row consent-row">
+						<label class="consent-label">
+							<input type="checkbox" name="privacy-consent" required />
+							<span>
+								<a class="policy-link" href="/privacy-policy">プライバシーポリシー</a>
+								に同意します
+								<span class="required">必須</span>
+							</span>
+						</label>
+					</div>
+
+					<button class="submit-button" type="submit">送信する</button>
+				</form>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+
+	<script>
+		const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+		if (form) {
+			form.addEventListener('submit', async (e) => {
+				if (!(e instanceof SubmitEvent)) return;
+				e.preventDefault();
+	
+				// HTMLのrequired等のチェックを先に走らせる
+				if (!form.reportValidity()) return;
+	
+				const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+				if (submitButton) {
+
+					const originalText = submitButton.textContent ?? '';
+		
+					submitButton.disabled = true;
+					submitButton.textContent = '送信中...';
+		
+					try {
+						const data = new FormData(form);
+			
+						const res = await fetch(form.action, {
+							method: 'POST',
+							body: data,
+							headers: {
+								'Accept': 'application/json'
+							}
+						});
+			
+						if (res.ok) {
+							form.reset(); // ★入力欄リセット
+							window.location.href = "/thanks";
+						} else {
+							alert('送信に失敗しました。時間をおいて再度お試しください。');
+						}
+					} catch (err) {
+						alert('通信に失敗しました。ネットワークをご確認ください。');
+					} finally {
+						submitButton.disabled = false;
+						submitButton.textContent = originalText;
+					}
+				}
+			});
+		}
+	</script>
+</html>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 40px 0 40px;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.contact {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.contact-form {
+		background: rgba(255, 255, 255, 0.72);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 22px;
+		padding: 40px;
+		display: grid;
+		gap: 22px;
+	}
+
+	.form-row {
+		display: grid;
+		gap: 10px;
+	}
+
+	label {
+		font-size: 0.95rem;
+		letter-spacing: 0.12em;
+		color: var(--color-text);
+	}
+
+	input,
+	textarea {
+		width: 100%;
+		border: 1px solid rgba(84, 70, 50, 0.2);
+		border-radius: 12px;
+		padding: 12px 14px;
+		font-size: 1rem;
+		background: rgba(255, 255, 255, 0.9);
+		color: var(--color-text);
+		font-family: inherit;
+	}
+
+	textarea {
+		resize: vertical;
+		min-height: 160px;
+	}
+
+	.consent-row {
+		gap: 0;
+	}
+
+	.consent-label {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 0.95rem;
+		letter-spacing: 0.12em;
+		color: var(--color-text);
+	}
+
+	.consent-label input {
+		width: 18px;
+		height: 18px;
+		margin: 0;
+		accent-color: var(--color-text);
+	}
+
+	.policy-link {
+		color: var(--color-text);
+		text-decoration: underline;
+	}
+
+	.required,
+	.optional {
+		font-size: 0.7rem;
+		letter-spacing: 0.18em;
+		margin-left: 0.5rem;
+		padding: 2px 8px;
+		border-radius: 999px;
+	}
+
+	.required {
+		background: rgba(47, 37, 24, 0.1);
+		color: red;
+	}
+
+	.optional {
+		background: rgba(126, 109, 82, 0.12);
+		color: #7e6d52;
+	}
+
+	.submit-button {
+		width: 100%;
+		justify-self: start;
+		padding: 12px 32px;
+		border-radius: 999px;
+		border: none;
+		background: var(--color-text);
+		color: var(--color-white);
+		font-size: 1rem;
+		letter-spacing: 0.12em;
+		cursor: pointer;
+		margin-top: 30px;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.contact {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.contact-form {
+			padding: 24px;
+		}
+	}
+</style>

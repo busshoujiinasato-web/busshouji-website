@@ -3,6 +3,7 @@ const siteTitle = "Busshouji";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "../styles/global.css";
 ---
 
 <html lang="ja">
@@ -21,7 +22,7 @@ import Footer from "../components/Footer.astro";
 			<section class="hero" aria-label="メインビジュアル">
 				<img src="/images/hero/home-hero.webp" alt="ヒーロー画像" loading="eager" />
 				<div class="hero-overlay">
-					<p class="hero-subtitle">BUSSHOUJI WEBSITE</p>
+					<p class="hero-subtitle">BBBBBBBBB WEBSITE</p>
 					<h1>仏生寺の魅力を、静かに、丁寧に。</h1>
 					<p>
 						歴史、風景、行事の情報を通して、
@@ -52,18 +53,18 @@ import Footer from "../components/Footer.astro";
 						<ul class="news-list">
 							<li>
 								<time datetime="2026-01-01">2026/01/01</time>
-								<p>【年末年始のご案内】初詣について</p>
+								<a href="">【年末年始のご案内】初詣について</a>
 							</li>
 							<li>
 								<time datetime="2026-04-23">2026/04/23</time>
-								<p>それぞれの季節ごとのお知らせについて</p>
+								<a href="">それぞれの季節ごとのお知らせについて</a>
 							</li>
 							<li>
 								<time datetime="2026-04-23">2026/04/23</time>
-								<p>
+								<a href="">
 									それぞれの季節ごとのお知らせについて<br />
 									一応改行されることも想定しています
-								</p>
+								</a>
 							</li>
 						</ul>
 						<a class="news-link" href="/news">お知らせ一覧へ</a>
@@ -79,10 +80,37 @@ import Footer from "../components/Footer.astro";
 	</body>
 </html>
 
+<script>
+	const sections = document.querySelectorAll(".content-wrap section");
+
+	if ("IntersectionObserver" in window) {
+		const observer = new IntersectionObserver(
+			(entries, obs) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("is-visible");
+						// obs.unobserve(entry.target);
+					} else {
+						entry.target.classList.remove("is-visible");
+					}
+				});
+			},
+			{
+				threshold: 0.15
+			}
+		);
+
+		sections.forEach((section) => {
+			section.classList.add("js-reveal");
+			observer.observe(section);
+		});
+	}
+</script>
+
 <style>
 	:root {
 		color: #1f2b24;
-		background-color: #f2f0eb;
+		background-color: var(--color-bg);
 		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
@@ -92,7 +120,7 @@ import Footer from "../components/Footer.astro";
 
 	body {
 		margin: 0;
-		background: linear-gradient(180deg, #f8f4ed 0%, #f2f0eb 40%, #ebe7df 100%);
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
 	}
 
 	main {
@@ -112,6 +140,8 @@ import Footer from "../components/Footer.astro";
 		object-fit: cover;
 		object-position: center center;
 		display: block;
+		transform: scale(1.06);
+		animation: heroZoomIn 2s ease forwards;
 	}
 
 	.hero-overlay {
@@ -122,7 +152,8 @@ import Footer from "../components/Footer.astro";
 		justify-content: flex-end;
 		padding: 0 80px 76px;
 		background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.4) 65%, rgba(0, 0, 0, 0.58) 100%);
-		color: #fff;
+		color: var(--color-white);
+		animation: heroOverlaySlide 0.9s ease forwards;
 	}
 
 	.hero-subtitle {
@@ -146,6 +177,24 @@ import Footer from "../components/Footer.astro";
 		line-height: 1.9;
 	}
 
+	@keyframes heroZoomIn {
+		from {
+			transform: scale(1.1);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+
+	@keyframes heroOverlaySlide {
+		from {
+			transform: translateX(-40px);
+		}
+		to {
+			transform: translateX(0);
+		}
+	}
+
 	.content-wrap {
 		width: min(1120px, calc(100% - 80px));
 		margin: 100px auto 100px;
@@ -161,6 +210,15 @@ import Footer from "../components/Footer.astro";
 		padding: 0;
 	}
 
+	.info-section.js-reveal {
+		transform: scale(0.75);
+		transition: transform 0.6s ease;
+	}
+
+	.info-section.js-reveal.is-visible {
+		transform: scale(1);
+	}
+
 	.section-label {
 		margin: 0;
 		font-size: 0.78rem;
@@ -173,7 +231,7 @@ import Footer from "../components/Footer.astro";
 		margin: 0.65rem 0 1rem;
 		font-size: 2rem;
 		letter-spacing: 0.05em;
-		color: #2f2518;
+		color: var(--color-text);
 	}
 
 	.info-text {
@@ -184,7 +242,7 @@ import Footer from "../components/Footer.astro";
 		margin: 0;
 		font-size: 1rem;
 		line-height: 2;
-		color: #3d3225;
+		color: var(--color-text);
 	}
 
 	.news-list {
@@ -206,11 +264,14 @@ import Footer from "../components/Footer.astro";
 		/* margin-bottom: 5px; */
 	}
 
-	.news-list p {
+	.news-list a {
+		display: flex;
 		margin: 0;
 		font-size: 1.3rem;
 		line-height: 1.9;
-		color: #2f2518;
+		color: var(--color-text);
+		text-decoration: none;
+		transition: color 0.2s ease, transform 0.2s ease;
 	}
 
 	.news-link {
@@ -222,13 +283,20 @@ import Footer from "../components/Footer.astro";
 		margin-top: 50px;
 		font-size: 0.95rem;
 		text-decoration: none;
-		color: #2f2518;
+		color: var(--color-text);
 		letter-spacing: 0.08em;
+		transition: color 0.2s ease, transform 0.2s ease;
 	}
 
 	.news-link::before {
 		content: "=>";
 		font-size: 0.95rem;
+	}
+
+	.news-link:hover, .news-link:focus-visible, .news-list a:hover, .news-list a:focus-visible {
+		/* text-decoration: underline; */
+		transform: scale(1.01);
+		color: #28678f;
 	}
 
 	.media {
@@ -258,4 +326,20 @@ import Footer from "../components/Footer.astro";
 		/* aspect-ratio: 800 /900; */
 	}
 
+
+	@media (max-width: 768px) {
+		#overview, #news {
+			grid-template-columns: 1fr;
+		}
+
+		#overview .info-text,
+		#news .info-text {
+			order: 0;
+		}
+
+		#overview .media,
+		#news .media {
+			order: 1;
+		}
+	}
 </style>

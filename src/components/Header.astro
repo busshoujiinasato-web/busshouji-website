@@ -4,15 +4,35 @@
 			<!-- Busshouji -->
 			 BBBBBBBBBB
 		</a>
-		<nav aria-label="グローバルナビゲーション">
+		<button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+			<span class="menu-bar"></span>
+			<span class="menu-bar"></span>
+			<span class="menu-bar"></span>
+		</button>
+		<nav id="site-nav" class="site-nav" aria-label="グローバルナビゲーション">
 			<ul class="nav-list">
-				<li><a href="#overview">概要</a></li>
-				<li><a href="#news">お知らせ</a></li>
-				<li><a href="#footer-contact">お問い合わせ</a></li>
+				<li><a href="/#overview">概要</a></li>
+				<li><a href="/news">お知らせ</a></li>
+				<li><a href="/access">アクセス</a></li>
+				<li><a href="/contact">お問い合わせ</a></li>
 			</ul>
 		</nav>
 	</div>
 </header>
+
+<script>
+	const header = document.querySelector("header");
+	const button = header?.querySelector(".menu-button");
+	const nav = header?.querySelector("#site-nav");
+
+	// console.log(header);
+	if (button && nav) {
+		button.addEventListener("click", () => {			
+			const isOpen = header?.classList.toggle("is-open");
+			button.setAttribute("aria-expanded", String(Boolean(isOpen)));
+		});
+	}
+</script>
 
 <style>
 	.site-header {
@@ -56,5 +76,94 @@
 		text-decoration: none;
 		font-size: 0.95rem;
 		letter-spacing: 0.06em;
+		transition: color 0.2s ease, transform 0.2s ease;
+	}
+
+	.nav-list li {
+		transition: color 0.2s ease, transform 0.2s ease;
+	}
+
+	.nav-list li:hover,
+	.nav-list li:focus-visible {
+		transform: scale(1.15);
+	}
+
+	.nav-list a:hover,
+	.nav-list a:focus-visible {
+		color: #1d4d2b;
+	}
+
+
+	.menu-button {
+		display: none;
+		flex-direction: column;
+		gap: 6px;
+		background: transparent;
+		border: 0;
+		padding: 8px;
+		cursor: pointer;
+	}
+
+	.menu-bar {
+		display: block;
+		width: 26px;
+		height: 2px;
+		background: #2f2c28;
+		border-radius: 999px;
+		transition: transform 0.25s ease, opacity 0.2s ease;
+	}
+
+	@media (max-width: 768px) {
+		.header-inner {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.menu-button {
+			display: flex;
+		}
+
+		.site-nav {
+			position: absolute;
+			top: 80px;
+			left: 0;
+			width: 100%;
+			background: rgba(248, 244, 237, 0.95);
+			backdrop-filter: blur(14px);
+			-webkit-backdrop-filter: blur(14px);
+			border-bottom: 1px solid rgba(84, 70, 50, 0.15);
+			padding: 16px 0;
+			display: block;
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-8px);
+			overflow: hidden;
+			pointer-events: none;
+			transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+		}
+
+		.site-header.is-open .site-nav {
+			max-height: 320px;
+			opacity: 1;
+			transform: translateY(0);
+			pointer-events: auto;
+		}
+
+		.nav-list {
+			flex-direction: column;
+			gap: 14px;
+			align-items: center;
+		}
+
+		.site-header.is-open .menu-bar:nth-child(1) {
+			transform: translateY(8px) rotate(45deg);
+		}
+
+		.site-header.is-open .menu-bar:nth-child(2) {
+			opacity: 0;
+		}
+
+		.site-header.is-open .menu-bar:nth-child(3) {
+			transform: translateY(-8px) rotate(-45deg);
+		}
 	}
 </style>
