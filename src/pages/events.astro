@@ -1,0 +1,361 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import { getCollection } from "astro:content";
+
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const events = await getCollection("events");
+const eventsByMonth = events.reduce(
+	(acc, entry) => {
+		const month = entry.data.month;
+		acc[month] = entry.data.events.map((item) => ({
+			title: item.title,
+			desc: item.text,
+			image: item.image
+		}));
+		return acc;
+	},
+	{} as Record<number, { title: string; desc: string; image?: string }[]>
+);
+---
+
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>年間行事 | Busshouji</title>
+	</head>
+	<body>
+		<Header />
+
+		<main>
+			<section class="page-hero">
+				<div class="page-hero__inner">
+					<p class="page-hero__label">Annual Events</p>
+					<h1>年間行事</h1>
+					<p>仏生寺で行う年間行事のご案内です。</p>
+				</div>
+			</section>
+
+			<section class="events">
+				<div class="events-card">
+					<div class="events-tabs" role="tablist" aria-label="月別の年間行事">
+						{months.map((month) => (
+							<button
+								type="button"
+								class="events-tab"
+								data-month={month}
+								role="tab"
+								aria-selected={month === 1 ? "true" : "false"}
+							>
+								{month}月
+							</button>
+						))}
+					</div>
+
+					<div class="events-panels">
+						{months.map((month) => {
+							const items = eventsByMonth[month] ?? [];
+							return (
+								<div class="events-panel" data-month={month} role="tabpanel">
+									<div class="events-panel-header">
+										<span class="event-month">{month}月</span>
+									</div>
+									{items.length === 0 ? (
+										<p class="event-empty">この月の行事は準備中です。</p>
+									) : (
+										<ul class="events-list">
+											{items.map((item) => (
+												<li>
+													<div class="event-body">
+														<div class="event-media">
+															{item.image ? (
+																<img src={item.image} alt={item.title} loading="lazy" />
+															) : (
+																<div class="event-media__placeholder" aria-hidden="true"></div>
+															)}
+														</div>
+														<div class="event-text">
+															<h5 class="event-title">{item.title}</h5>
+															<p class="event-desc">{item.desc}</p>
+														</div>
+													</div>
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<script>
+	const tabs = Array.from(document.querySelectorAll(".events-tab"));
+	const panels = Array.from(document.querySelectorAll(".events-panel"));
+
+	const getMonthFromHash = () => {
+		const match = window.location.hash.match(/month=(\d{1,2})/);
+		if (!match) return 1;
+		const month = Number(match[1]);
+		return Number.isNaN(month) || month < 1 || month > 12 ? 1 : month;
+	};
+
+	const setActive = (month) => {
+		tabs.forEach((tab) => {
+			const isActive = Number(tab.dataset.month) === month;
+			tab.setAttribute("aria-selected", String(isActive));
+			tab.classList.toggle("is-active", isActive);
+		});
+
+		panels.forEach((panel) => {
+			const isActive = Number(panel.dataset.month) === month;
+			panel.classList.toggle("is-active", isActive);
+		});
+	};
+
+	const initialMonth = getMonthFromHash();
+	setActive(initialMonth);
+
+	tabs.forEach((tab) => {
+		tab.addEventListener("click", () => {
+			const month = Number(tab.dataset.month);
+			if (!month) return;
+			setActive(month);
+			window.location.hash = `month=${month}`;
+		});
+	});
+
+	window.addEventListener("hashchange", () => {
+		setActive(getMonthFromHash());
+	});
+</script>
+
+<style>
+	:root {
+		color: #1f2b24;
+		background-color: var(--color-bg);
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: linear-gradient(180deg, #f8f4ed 0%, var(--color-bg) 40%, #ebe7df 100%);
+	}
+
+	main {
+		padding-top: 80px;
+	}
+
+	.page-hero {
+		padding: 40px 0;
+	}
+
+	.page-hero__inner {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto;
+	}
+
+	.page-hero__label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: #7e6d52;
+	}
+
+	h1 {
+		margin: 0.7rem 0 0.9rem;
+		font-size: clamp(2rem, 3.3vw, 3rem);
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.page-hero__inner p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: #3d3225;
+	}
+
+	.events {
+		width: min(1120px, calc(100% - 80px));
+		margin: 0 auto 96px;
+	}
+
+	.events-card {
+		background: rgba(255, 255, 255, 0.72);
+		border: 1px solid rgba(103, 85, 58, 0.16);
+		border-radius: 22px;
+		padding: 40px;
+		display: grid;
+		gap: 28px;
+	}
+
+	.events-tabs {
+		display: grid;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		gap: 10px;
+	}
+
+	.events-tab {
+		border: 1px solid rgba(103, 85, 58, 0.25);
+		background: rgba(255, 255, 255, 0.6);
+		border-radius: 999px;
+		padding: 10px 0;
+		font-size: 0.95rem;
+		letter-spacing: 0.06em;
+		color: var(--color-text);
+		cursor: pointer;
+		transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+	}
+
+	.events-tab.is-active {
+		background: rgba(47, 37, 24, 0.08);
+		border-color: rgba(47, 37, 24, 0.35);
+	}
+
+	.events-tab:hover,
+	.events-tab:focus-visible {
+		transform: translateY(-1px);
+	}
+
+	.events-panels {
+		display: grid;
+	}
+
+	.events-panel {
+		opacity: 0;
+		/* display: none; */
+		max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+		transform: scale(0.98);
+		transition: opacity 1s ease, transform 1s ease, max-height 1s ease;;
+		pointer-events: none;
+		grid-area: 1 / 1;
+	}
+
+	.events-panel.is-active {
+		opacity: 1;
+		/* display: block; */
+		max-height: 2000px; /* 十分大きい値 */
+		visibility: visible;
+		transform: scale(1);
+		pointer-events: auto;
+	}
+
+	.events-panel-header {
+		margin-bottom: 20px;
+	}
+
+	.events-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 30px;
+	}
+
+	.events-list li {
+		border-bottom: 1px solid rgba(84, 70, 50, 0.3);
+		padding-bottom: 30px;
+	}
+
+	.event-month {
+		display: inline-block;
+		font-size: 1.75rem;
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+	}
+
+	.event-title {
+		margin: 0 0 15px;
+		font-size: 1.25rem;
+		letter-spacing: 0.04em;
+		color: var(--color-text);
+	}
+
+	.event-desc {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: var(--color-text);
+	}
+
+	.event-body {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+		align-items: start;
+	}
+
+	.event-media img,
+	.event-media__placeholder {
+		width: 70%;
+		height: 100%;
+		/* border-radius: 14px; */
+		display: block;
+		min-height: 180px;
+		max-height: 250px;
+	}
+
+	.event-media img {
+		object-fit: contain;
+	}
+
+	.event-media__placeholder {
+		background: rgba(47, 37, 24, 0.08);
+	}
+
+	.event-empty {
+		margin: 0;
+		color: var(--color-text);
+		font-size: 1rem;
+		letter-spacing: 0.04em;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero__inner,
+		.events {
+			width: min(1120px, calc(100% - 32px));
+		}
+
+		.events-card {
+			padding: 24px;
+		}
+
+		.events-tabs {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.event-body {
+			grid-template-columns: 1fr;
+		}
+
+		.event-media img,
+		.event-media__placeholder {
+			width: 100%;
+			height: 100%;
+			max-height: 180px;
+		}
+
+		.event-month {
+			font-size: 1.5rem;
+		}
+	}
+</style>
