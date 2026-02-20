@@ -4,6 +4,23 @@ const siteTitle = "Busshouji";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+import { getCollection } from "astro:content";
+
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const events = await getCollection("events");
+const eventsByMonth = events.reduce(
+	(acc, entry) => {
+		const month = entry.data.month;
+		acc[month] = entry.data.events.map((item) => ({
+			title: item.title,
+			desc: item.summary,
+			// image: item.image
+		}));
+		return acc;
+	},
+	{} as Record<number, { title: string; desc: string }[]>
+);
+
 ---
 
 <html lang="ja">
@@ -72,6 +89,39 @@ import "../styles/global.css";
 					<figure class="media media-news">
 						<img src="/images/other/image-2.webp" alt="お知らせイメージ" loading="lazy" />
 					</figure>
+				</section>
+
+				<section id="events" class="events-section">
+					<figure class="events-hero">
+						<img src="/images/other/image.webp" alt="年間行事イメージ" loading="lazy" />
+					</figure>
+					<div class="events-content ">
+						<p class="section-label">Annual Events</p>
+						<h2>年間行事</h2>
+						<ul class="events-list">
+							{months.map((month) => {
+								const items = eventsByMonth[month] ?? [];
+								return items.length > 0 ?
+								(
+									<li>
+										{items.map((item) => (
+											<a class="event-month" href={`/events#month=${month}`}><span >{month}月</span></a>
+											<div class="event-body">
+												<h5 class="event-title">{item.title}</h5>
+												<p class="event-desc">
+													{item.desc}
+												</p>
+											</div>
+										))}
+									</li>
+								)
+								:
+								null
+								;
+							})}
+						</ul>
+						<a class="news-link" href="/events">年間行事 詳しくはコチラ</a>
+					</div>
 				</section>
 			</div>
 		</main>
@@ -219,6 +269,40 @@ import "../styles/global.css";
 		transform: scale(1);
 	}
 
+	.events-section {
+		display: grid;
+		gap: 32px;
+	}
+
+	.events-hero {
+		margin: 0;
+		width: 100vw;
+		height: 220px;
+		overflow: hidden;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.events-hero img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center center;
+		display: block;
+	}
+
+	.events-content {
+		width: min(1120px, calc(100% - 50px));
+		margin: 260px auto 0 auto;
+	}
+
+	@media (max-width: 768px) {
+		.events-content {
+			width: min(1120px, 100%);
+		}
+	}
+
 	.section-label {
 		margin: 0;
 		font-size: 0.78rem;
@@ -238,7 +322,7 @@ import "../styles/global.css";
 		margin: auto 0;
 	}
 
-	.info-text p {
+	.info-text p, .events-content p {
 		margin: 0;
 		font-size: 1rem;
 		line-height: 2;
@@ -299,6 +383,55 @@ import "../styles/global.css";
 		color: #28678f;
 	}
 
+	.events-list {
+		list-style: none;
+		padding: 0;
+		margin: 50px 0 0 0;
+		display: grid;
+		gap: 50px;
+	}
+
+	.events-list li {
+		padding: 25px 50px 0;
+		display: grid;
+		grid-template-columns: 6rem 1fr;
+		gap: 40px;
+		align-items: start;
+		border-top: 1px solid rgba(84, 70, 50, 0.3);
+	}
+
+	li .event-month {
+		display: inline-block;
+		opacity: 0;
+		font-size: 1.75rem;
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+	li .event-month:first-child {	
+		opacity: 1;	
+	}
+
+
+	.event-body {
+		margin-top: 40px;
+	}
+
+	.event-title {
+		margin: 0 0 8px;
+		font-size: 1rem;
+		letter-spacing: 0.04em;
+		color: var(--color-text);
+	}
+
+	.event-desc {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: var(--color-text);
+	}
+	
+
 	.media {
 		margin: 0;
 		border-radius: 16px;
@@ -340,6 +473,15 @@ import "../styles/global.css";
 		#overview .media,
 		#news .media {
 			order: 1;
+		}
+
+		.events-list li {
+			grid-template-columns: 1fr;
+			gap: 10px;
+		}
+
+		.event-month {
+			font-size: 1.5rem;
 		}
 	}
 </style>
