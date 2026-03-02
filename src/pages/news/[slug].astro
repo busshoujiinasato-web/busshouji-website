@@ -1,8 +1,11 @@
 ---
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import SeoMeta from "../../components/SeoMeta.astro";
+import StructuredData from "../../components/StructuredData.astro";
 import "../../styles/global.css";
 import { getCollection } from "astro:content";
+import { getArticleStructuredData } from "../../utils/structuredData";
 
 export async function getStaticPaths() {
 	const entries = await getCollection("news");
@@ -14,6 +17,15 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const pageDescription = entry.data.summary;
+const articleStructuredData = getArticleStructuredData({
+	site: Astro.site,
+	pathname: Astro.url.pathname,
+	title: entry.data.title,
+	description: entry.data.summary,
+	datePublished: entry.data.date,
+	image: entry.data.image,
+});
 ---
 
 <html lang="ja">
@@ -23,6 +35,15 @@ const { Content } = await entry.render();
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<SeoMeta
+			title={`${entry.data.title} | Busshouji`}
+			pathname={Astro.url.pathname}
+			site={Astro.site}
+			description={pageDescription}
+			image={entry.data.image}
+			type="article"
+		/>
+		<StructuredData data={articleStructuredData} />
 		<title>{entry.data.title} | Busshouji</title>
 	</head>
 	<body>
@@ -58,7 +79,6 @@ const { Content } = await entry.render();
 	:root {
 		color: #1f2b24;
 		background-color: var(--color-bg);
-		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
 	* {

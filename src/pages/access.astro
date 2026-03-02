@@ -1,7 +1,12 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import SeoMeta from "../components/SeoMeta.astro";
 import "../styles/global.css";
+
+const pageDescription =
+	"佛性寺へのアクセス情報です。所在地、連絡先、地図、交通手段をご案内しています。"
+;
 ---
 
 <html lang="ja">
@@ -11,6 +16,12 @@ import "../styles/global.css";
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<SeoMeta
+			title="アクセス | Busshouji"
+			pathname={Astro.url.pathname}
+			site={Astro.site}
+			description={pageDescription}
+		/>
 		<title>アクセス | Busshouji</title>
 	</head>
 	<body>
@@ -28,37 +39,38 @@ import "../styles/global.css";
 			<section class="access">
 				<div class="access-card">
 					<div class="access-map">
-						<iframe
-							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3269.708702316398!2d135.76387381088188!3d34.9639090689322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60010f6a49ca9f47%3A0xd550f6978f82ccac!2z6b6N6LC35aSn5a2mIOa3seiNieOCreODo-ODs-ODkeOCuQ!5e0!3m2!1sja!2sjp!4v1770351415306!5m2!1sja!2sjp"
-							width="600"
-							height="450"
-							style="border:0;"
-							allowfullscreen=""
-							loading="lazy"
+						<iframe 
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3259.2371310258877!2d136.2018487!3d35.2254666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60017fd062f034a9%3A0x72931f6709338a9d!2z5LuP5oCn5a-6!5e0!3m2!1sja!2sjp!4v1772451540818!5m2!1sja!2sjp" 
+							width="600" 
+							height="450" 
+							style="border:0;" 
+							allowfullscreen="" 
+							loading="lazy" 
 							referrerpolicy="no-referrer-when-downgrade"
 							title="アクセスマップ"
 						></iframe>
 					</div>
 
 					<div class="access-info">
-						<p class="access-value">〒000-0000</p>
-						<p class="access-value">大阪府大阪市西成区汐路0丁目0-0</p>
-						<p class="access-value">TEL：00-0000-0000 / FAX：00-0000-0000</p>
+						<p class="access-value">〒521-1111</p>
+						<p class="access-value">滋賀県彦根市稲里町47</p>
+						<!-- <p class="access-value">TEL：00-0000-0000 / FAX：00-0000-0000</p> -->
+						<p class="access-value">E-mail：busshouji.inasato@gmail.com</p>
 					</div>
 
 					<div class="access-notes">
 						<div class="access-note">
 							<p class="access-note__title">- 車でお越しの場合 -</p>
 							<p>
-								最寄り〇〇ICから約10分。境内の駐車場をご利用ください。<br>
-								満車の場合は近隣のコインパーキングをご案内します。
+								数台分ではございますが、本堂前に駐車場がございます。<br>
+								詳細はお問い合わせください。
 							</p>
 						</div>
 						<div class="access-note">
 							<p class="access-note__title">- 電車でお越しの場合 -</p>
 							<p>
-								最寄り〇〇駅から徒歩約8分。駅前の案内板に沿ってお越しください。<br>
-								バスをご利用の方は「〇〇前」で下車してください。
+								最寄駅、東海道・山陽本線 河瀬駅から徒歩約40分。<br>
+								または、近江鉄道本線 尼子駅から徒歩1時間10分。
 							</p>
 						</div>
 					</div>
@@ -74,7 +86,6 @@ import "../styles/global.css";
 	:root {
 		color: #1f2b24;
 		background-color: var(--color-bg);
-		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
 	* {

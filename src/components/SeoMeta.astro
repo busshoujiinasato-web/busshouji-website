@@ -1,0 +1,47 @@
+---
+import {
+	SITE_NAME,
+	getCanonicalUrl,
+	getMetaDescription,
+	getOgImageUrl,
+} from "../utils/seo";
+
+interface Props {
+	title: string;
+	pathname: string;
+	site?: URL;
+	description?: string;
+	image?: string;
+	type?: "website" | "article";
+	noindex?: boolean;
+}
+
+const {
+	title,
+	pathname,
+	site,
+	description,
+	image,
+	type = "website",
+	noindex = false,
+} = Astro.props;
+
+const metaDescription = getMetaDescription(description);
+const canonicalUrl = getCanonicalUrl(pathname, site);
+const ogImageUrl = getOgImageUrl(site, image);
+---
+
+<meta name="description" content={metaDescription} />
+<link rel="canonical" href={canonicalUrl.href} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonicalUrl.href} />
+<meta property="og:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
+{noindex && <meta name="robots" content="noindex" />}
