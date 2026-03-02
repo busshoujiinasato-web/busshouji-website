@@ -3,10 +3,23 @@ const siteTitle = "Busshouji";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import SeoMeta from "../components/SeoMeta.astro";
+import StructuredData from "../components/StructuredData.astro";
 import "../styles/global.css";
 import { getCollection } from "astro:content";
+import {
+	getOrganizationStructuredData,
+	getWebSiteStructuredData,
+} from "../utils/structuredData";
 
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const pageDescription =
+	"佛性寺の概要、お知らせ、年間行事をご紹介しています。ご参拝前の最新情報もご確認いただけます。"
+;
+const news = await getCollection("news");
+const latestNews = news
+	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+	.slice(0, 3);
 const events = await getCollection("events");
 const eventsByMonth = events.reduce(
 	(acc, entry) => {
@@ -20,6 +33,10 @@ const eventsByMonth = events.reduce(
 	},
 	{} as Record<number, { title: string; desc: string }[]>
 );
+const indexStructuredData = [
+	getOrganizationStructuredData(Astro.site),
+	getWebSiteStructuredData(Astro.site),
+];
 
 ---
 
@@ -30,6 +47,13 @@ const eventsByMonth = events.reduce(
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<SeoMeta
+			title={siteTitle}
+			pathname={Astro.url.pathname}
+			site={Astro.site}
+			description={pageDescription}
+		/>
+		<StructuredData data={indexStructuredData} />
 		<title>{siteTitle}</title>
 	</head>
 	<body>
@@ -39,8 +63,8 @@ const eventsByMonth = events.reduce(
 			<section class="hero" aria-label="メインビジュアル">
 				<img src="/images/hero/home-hero.webp" alt="ヒーロー画像" loading="eager" />
 				<div class="hero-overlay">
-					<p class="hero-subtitle">BBBBBBBBB WEBSITE</p>
-					<h1>仏生寺の魅力を、静かに、丁寧に。</h1>
+					<p class="hero-subtitle">Busshouji WEBSITE</p>
+					<h1>佛性寺の魅力を、静かに、丁寧に。</h1>
 					<p>
 						歴史、風景、行事の情報を通して、
 						訪れる人と地域をつなぐためのホームページです。
@@ -51,13 +75,13 @@ const eventsByMonth = events.reduce(
 			<div class="content-wrap">
 				<section id="overview" class="info-section">
 					<figure class="media media-overview">
-						<img src="/images/other/image.webp" alt="仏生寺の概要イメージ" loading="lazy" />
+						<img src="/images/other/image.webp" alt="佛性寺の概要イメージ" loading="lazy" />
 					</figure>
 					<div class="info-text">
 						<p class="section-label">Overview</p>
 						<h2>概要</h2>
 						<p>
-							仏生寺は、地域とともに歩み続ける寺院です。静かな境内と四季折々の表情、
+							佛性寺は、地域とともに歩み続ける寺院です。静かな境内と四季折々の表情、
 							そして地域の行事を通して、人と人が自然につながる場所を目指しています。
 						</p>
 					</div>
@@ -67,23 +91,20 @@ const eventsByMonth = events.reduce(
 					<div class="info-text">
 						<p class="section-label">News</p>
 						<h2>お知らせ</h2>
-						<ul class="news-list">
-							<li>
-								<time datetime="2026-01-01">2026/01/01</time>
-								<a href="">【年末年始のご案内】初詣について</a>
-							</li>
-							<li>
-								<time datetime="2026-04-23">2026/04/23</time>
-								<a href="">それぞれの季節ごとのお知らせについて</a>
-							</li>
-							<li>
-								<time datetime="2026-04-23">2026/04/23</time>
-								<a href="">
-									それぞれの季節ごとのお知らせについて<br />
-									一応改行されることも想定しています
-								</a>
-							</li>
-						</ul>
+						{latestNews.length === 0 ? (
+							<p class="news-empty">現在、お知らせはありません。</p>
+						) : (
+							<ul class="news-list">
+								{latestNews.map((item) => (
+									<li>
+										<time datetime={item.data.date.toISOString().slice(0, 10)}>
+											{item.data.date.toISOString().slice(0, 10).replaceAll("-", "/")}
+										</time>
+										<a href={`/news/${item.slug}`}>{item.data.title}</a>
+									</li>
+								))}
+							</ul>
+						)}
 						<a class="news-link" href="/news">お知らせ一覧へ</a>
 					</div>
 					<figure class="media media-news">
@@ -161,7 +182,6 @@ const eventsByMonth = events.reduce(
 	:root {
 		color: #1f2b24;
 		background-color: var(--color-bg);
-		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
 	* {
@@ -356,6 +376,13 @@ const eventsByMonth = events.reduce(
 		color: var(--color-text);
 		text-decoration: none;
 		transition: color 0.2s ease, transform 0.2s ease;
+	}
+
+	.news-empty {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.9;
+		color: var(--color-text);
 	}
 
 	.news-link {

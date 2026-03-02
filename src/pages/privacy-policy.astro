@@ -1,7 +1,12 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import SeoMeta from "../components/SeoMeta.astro";
 import "../styles/global.css";
+
+const pageDescription =
+	"仏生寺サイトのプライバシーポリシーです。個人情報の取得、利用、管理方針を掲載しています。"
+;
 ---
 
 <html lang="ja">
@@ -11,6 +16,12 @@ import "../styles/global.css";
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<SeoMeta
+			title="プライバシーポリシー | Busshouji"
+			pathname={Astro.url.pathname}
+			site={Astro.site}
+			description={pageDescription}
+		/>
 		<title>プライバシーポリシー | Busshouji</title>
 	</head>
 	<body>
@@ -30,7 +41,7 @@ import "../styles/global.css";
 			<section class="policy">
 				<div class="policy-body">
 					<p>
-						当サイト（以下、「当サイト」といいます）では、個人情報の保護を重要な責務と考え、
+						当サイト（以下、「当サイト」といいます）では、個人情報の保護を重要な責務と考え
 						以下の方針に基づいて個人情報を取り扱います。
 					</p>
 
@@ -48,7 +59,7 @@ import "../styles/global.css";
 
 					<h2>個人情報の第三者提供について</h2>
 					<p>
-						取得した個人情報は、法令に基づく場合を除き、第三者に提供することはありません。
+						取得した個人情報は、法令に基づく場合を除き第三者に提供することはありません。
 					</p>
 
 					<h2>外部サービスの利用について</h2>
@@ -76,8 +87,8 @@ import "../styles/global.css";
 
 					<h2>お問い合わせ窓口</h2>
 					<p>本ポリシーに関するお問い合わせは、以下までご連絡ください。</p>
-					<p>（寺院名）</p>
-					<p>（連絡先メールアドレス等）</p>
+					<p>佛性寺</p>
+					<p>busshouji.inasato@gmail.com</p>
 				</div>
 			</section>
 		</main>
@@ -90,7 +101,6 @@ import "../styles/global.css";
 	:root {
 		color: #1f2b24;
 		background-color: var(--color-bg);
-		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
 	* {

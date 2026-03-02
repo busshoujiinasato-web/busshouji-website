@@ -1,11 +1,15 @@
 ---
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import SeoMeta from "../../components/SeoMeta.astro";
 import "../../styles/global.css";
 import { getCollection } from "astro:content";
 
 const news = await getCollection("news");
 const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const pageDescription =
+	"仏生寺のお知らせ一覧です。行事や法要、各種ご案内の最新情報を掲載しています。"
+;
 ---
 
 <html lang="ja">
@@ -15,6 +19,12 @@ const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<SeoMeta
+			title="お知らせ一覧 | Busshouji"
+			pathname={Astro.url.pathname}
+			site={Astro.site}
+			description={pageDescription}
+		/>
 		<title>お知らせ一覧 | Busshouji</title>
 	</head>
 	<body>
@@ -30,17 +40,21 @@ const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 			</section>
 
 			<section class="news">
-				<ul class="news-list">
-					{sortedNews.map((item) => (
-						<li>
-							<time datetime={item.data.date.toISOString().slice(0, 10)}>
-								{item.data.date.toISOString().slice(0, 10).replaceAll("-", "/")}
-							</time>
-							<a href={`/news/${item.slug}`}>{item.data.title}</a>
-							<p>{item.data.summary}</p>
-						</li>
-					))}
-				</ul>
+				{sortedNews.length === 0 ? (
+					<p class="news-empty">現在、お知らせはありません。</p>
+				) : (
+					<ul class="news-list">
+						{sortedNews.map((item) => (
+							<li>
+								<time datetime={item.data.date.toISOString().slice(0, 10)}>
+									{item.data.date.toISOString().slice(0, 10).replaceAll("-", "/")}
+								</time>
+								<a href={`/news/${item.slug}`}>{item.data.title}</a>
+								<p>{item.data.summary}</p>
+							</li>
+						))}
+					</ul>
+				)}
 			</section>
 		</main>
 
@@ -52,7 +66,6 @@ const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 	:root {
 		color: #1f2b24;
 		background-color: var(--color-bg);
-		font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
 	}
 
 	* {
@@ -135,6 +148,13 @@ const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 		margin: 0;
 		color: #3d3225;
 		line-height: 1.8;
+	}
+
+	.news-empty {
+		margin: 0;
+		color: var(--color-text);
+		font-size: 1rem;
+		line-height: 1.9;
 	}
 
 	.news-link:hover, .news-link:focus-visible, .news-list a:hover, .news-list a:focus-visible {
